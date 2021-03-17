@@ -23,6 +23,11 @@
     {{Mars.Mars_Facts|safe}}
   </div>
   </div>
+  {% for Hemisphere in Mars.Hemispheres %}
+  <h2>{{Hemisphere.title}}</h2><br>
+  <img src="{{Hemisphere.img_url}}"><br><br>
+  
+  {% endfor %}
 </body>
 
 </html>

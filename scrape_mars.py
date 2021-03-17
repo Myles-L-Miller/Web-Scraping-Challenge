@@ -41,10 +41,29 @@ def scrape_info():
     DF=pd.read_html("https://space-facts.com/mars/")[0]
     DF
 
+    URL= "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    browser.visit(URL)
+    links=browser.links.find_by_partial_text("Hemisphere Enhanced")
+    Hemisphere_URLS=[]
+    for i in range (len(links)): 
+        browser.links.find_by_partial_text("Hemisphere Enhanced")[i].click()
+        time.sleep(1)
+        html=browser.html
+        html=Soup(html,"html.parser")
+        image=html.find("div", class_="wide-image-wrapper")
+        a=image.find("a")
+        Hemisphere_Dict={}
+        Hemisphere_Dict["img_url"]=a["href"]
+        Title=html.find("h2",class_="title").get_text()
+        Hemisphere_Dict["title"]=Title
+        Hemisphere_URLS.append(Hemisphere_Dict)
+        browser.back()
+
     Data={
         "News_Title":News_Title, 
         "News_Para": News_Para,
         "Featured_Image": Featured_Image,
-        "Mars_Facts": DF.to_html()
+        "Mars_Facts": DF.to_html(),
+        "Hemispheres": Hemisphere_URLS
     }
     return Data
